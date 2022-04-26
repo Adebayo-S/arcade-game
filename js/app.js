@@ -1,11 +1,14 @@
 // Enemies our player must avoid
-var Enemy = function() {
+var Enemy = function(x = 0, y = 0, ppty = {speed: 100, sprite: 'images/enemy-bug.png'}) {
+    this.x = x;
+    this.y = y;
+    this.ppty = ppty;
     // Variables applied to each of our instances go here,
     // we've provided one for you to get started
 
     // The image/sprite for our enemies, this uses
     // a helper we've provided to easily load images
-    this.sprite = 'images/enemy-bug.png';
+    //this.sprite = 'images/enemy-bug.png';
 };
 
 // Update the enemy's position, required method for game
@@ -22,13 +25,23 @@ Enemy.prototype.render = function() {
 };
 
 // Now write your own player class
+var Player = function(x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/char-cat-girl.png';
+}
+Player.prototype.render = function(){
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+}
 // This class requires an update(), render() and
 // a handleInput() method.
 
 
 // Now instantiate your objects.
 // Place all enemy objects in an array called allEnemies
+var allEnemies = [ new Enemy(), new Enemy(), new Enemy()];
 // Place the player object in a variable called player
+var player = new Player( 200, 380);
 
 
 
