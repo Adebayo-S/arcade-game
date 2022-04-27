@@ -22,10 +22,11 @@ Enemy.prototype.render = function() {
 };
 
 // PLAYER
-var Player = function(x = 0, y = 100, char = 'boy') {
+var Player = function(char, x = 200, y = 400) {
     this.x = x;
     this.y = y;
-    switch (char) {
+    this.char = char;
+    switch (this.char) {
         case 'cat-girl': this.sprite = 'images/char-cat-girl.png';
             break;
         case 'boy': this.sprite = 'images/char-boy.png';
@@ -37,8 +38,8 @@ var Player = function(x = 0, y = 100, char = 'boy') {
         case 'princess': this.sprite = 'images/char-princess-girl.png';
             break;
     }
+};
 
-}
 Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
@@ -65,8 +66,8 @@ let rock = {
 // Place all enemy objects in an array called allEnemies
 var allEnemies = [ new Enemy(bug)/*, new Enemy(rock), new Enemy(bug)*/];
 // Place the player object in a variable called player
-var char = "cat-girl";
-var player = new Player("cat-girl");
+var char = "boy";
+var player = new Player(char);
 
 
 
