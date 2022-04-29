@@ -47,9 +47,29 @@ Player.prototype.update = function() {
 
 }
 
-Player.prototype.handleInput = function() {
-
+Player.prototype.handleInput = function(keyDown) {
+        if (keyDown === 'left' && this.x > 0)
+            this.x -= 101;
+        else if (keyDown === 'right' && this.x < 400)
+            this.x += 101;
+        else if (keyDown === 'up' && this.y > 0)
+            this.y -= 83;
+        else if (keyDown === 'down' && this.y < 400)
+            this.y += 83;
 }
+
+let bugs = [
+    {
+        position: { x: 0, y: 55},
+        speed: 100,
+        sprite: 'images/enemy-bug.png'
+    },
+    {
+        position: { x: 0, y: 55},
+        speed: 100,
+        sprite: 'images/enemy-bug.png'
+    }
+]
 let bug = {
     position: { x: 0, y: 55},
     speed: 100,
