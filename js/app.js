@@ -1,3 +1,10 @@
+let startBtn = document.querySelector(".start-btn");
+
+startBtn.addEventListener("click", function() {
+    document.getElementById('start-screen').style.display = 'none';
+})
+
+
 // ENEMIES
 var Enemy = function(enemy = {})
 {
@@ -65,7 +72,7 @@ var Player = function(char, x = 200, y = 400) {
             break;
         case 'boy': this.sprite = 'images/char-boy.png';
             break;
-        case 'horn-girl': this.sprite = 'images/char-horn-girl.png';
+        case 'little-devil': this.sprite = 'images/char-horn-girl.png';
             break;
         case 'pink-girl': this.sprite = 'images/char-pink-girl.png';
             break;
@@ -119,10 +126,38 @@ Array.prototype.random = function () {
 var allEnemies = [ new Enemy(bugs[0]), new Enemy(bugs[1]), new Enemy(bugs[2])];
 // Place the player object in a variable called player
 
+// Default player state
+var player = new Player('boy');
+var icon = 'images/char-boy.png';
+document.querySelector('.char').innerHTML = `<img src=${icon}>`;
+document.querySelector('.char-message').innerText = "boy selected.";
 
-var char = "boy";
-var player = new Player(char);
+// When a character gets selected
+var selectChar = function(char) {
+    player = new Player(char);
 
+    switch (char) {
+        case 'cat-girl': icon = 'images/char-cat-girl.png';
+            break;
+        case 'boy': icon = 'images/char-boy.png';
+            break;
+        case 'little-devil': icon = 'images/char-horn-girl.png';
+            break;
+        case 'pink-girl': icon = 'images/char-pink-girl.png';
+            break;
+        case 'princess': icon = 'images/char-princess-girl.png';
+            break;
+    }
+    document.querySelector('.char').innerHTML = `<img src=${icon}>`;
+    document.querySelector('.char-message').innerText = char + " selected.";
+}
+
+var Jewels = function (x, y) {
+    this.x = x;
+    this.y = y;
+    this.sprite = 'images/Gem Orange.png';
+
+}
 
 
 // This listens for key presses and sends the keys to your
