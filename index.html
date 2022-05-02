@@ -3,11 +3,107 @@
 <head>
     <meta charset="UTF-8">
     <title>Effective JavaScript: Frogger</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+    <!-- Button trigger modal -->
+  <!-- Modal -->
+  <div id="start-screen" class="modal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">The Frogger</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div class="container-fluid">
+                <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-indicators">
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="3" aria-label="Slide 4"></button>
+                        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="4" aria-label="Slide 5"></button>
+                    </div>
+                    <div class="instruction">
+                        <h3>Instructions</h3>
+                      </div>
+                    <div class="partition">
+                        <p class="">Select your character 🧒 (by clicking), evade the bugs 🐜, collect all the
+                            gems on the other side 💎, then win the game! 🎉
+                        </p>
+                    </div>
+                    <div class="carousel-inner">
+                        <div class="carousel-item active" onclick="selectChar('boy')">
+                            <img src="images/char-boy.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-md-block">
+                                <h5>cute boy</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item" onclick="selectChar('pink-girl')">
+                            <img src="images/char-pink-girl.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-md-block">
+                                <h5>Pink girl</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item" onclick="selectChar('princess')">
+                            <img src="images/char-princess-girl.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-md-block">
+                                <h5>Princess</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item" onclick="selectChar('cat-girl')">
+                            <img src="images/char-cat-girl.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-md-block">
+                                <h5>cat girl</h5>
+                            </div>
+                        </div>
+                        <div class="carousel-item" onclick="selectChar('little-devil')">
+                            <img src="images/char-horn-girl.png" class="d-block w-100" alt="...">
+                            <div class="carousel-caption d-md-block">
+                                <h5>little devil</h5>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+                      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Previous</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+                      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                      <span class="visually-hidden">Next</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="selection-container">
+            <span class="char"></span>
+            <span class="char-message"></span>
+        </div>
+        <div class="modal-footer">
+            <a href="https://github.com/Adebayo-S/arcade-game" target="blank">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <span class="iconify" data-icon="fa6-brands:github-alt" style="color: black;"></span>
+                </button>
+            </a>
+          <button type="button" class="start-btn btn btn-success">Start Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="js/resources.js"></script>
     <script src="js/app.js"></script>
     <script src="js/engine.js"></script>
+    <div class="update d-flex justify-content-between">
+        <span class="scores">Score: 0</span>
+        <span class="lives">Health: ❤️️❤️️❤️️</span>
+    </div>
 </body>
 </html>
