@@ -10,9 +10,7 @@ visit: [arcade-game](https://adebayo-s.github.io/arcade-game/)
 
 ### Move your player using the keyboard arrow keys
 
-    ```
     - ⬆️: Up
     - ➡️: Right
     - ⬅️: Left
     - ⬇️: Down
-    ```
