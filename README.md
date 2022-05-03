@@ -4,13 +4,17 @@
 
 This game was built with JavaScript. The functions are **object-oriented** class prototype functions.
 
-## How to play
+## How to run
 
 visit: [arcade-game](https://adebayo-s.github.io/arcade-game/)
 
-### Move your player using the keyboard arrow keys
+### How to play
+
+Use the arrow keys to move the player
 
     - ⬆️: Up
     - ➡️: Right
     - ⬅️: Left
     - ⬇️: Down
+
+Avoid the bugs and collect all jewels to win the game :)
