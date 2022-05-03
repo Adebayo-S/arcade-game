@@ -1,11 +1,46 @@
 //default state
-var scores = 0;
-var lives = 3;
+let scores = 0;
+let lives = 3;
+let allJewels = [];
+let allEnemies = [];
 
+
+// Default player state
+let icon = 'images/char-boy.png';
+document.querySelector('.char').innerHTML = `<img src=${icon}>`;
+document.querySelector('.char-message').innerText = "boy selected.";
 
 let startBtn = document.querySelector(".start-btn");
 
+//create an array method to return a random value in an array
+Array.prototype.random = function () {
+    return this[Math.floor((Math.random() * this.length))];
+}
+
+// When a character gets selected
+let selectChar = function(char) {
+    player = new Player(char);
+
+    switch (char) {
+        case 'cat-girl': icon = 'images/char-cat-girl.png';
+            break;
+        case 'boy': icon = 'images/char-boy.png';
+            break;
+        case 'little-devil': icon = 'images/char-horn-girl.png';
+            break;
+        case 'pink-girl': icon = 'images/char-pink-girl.png';
+            break;
+        case 'princess': icon = 'images/char-princess-girl.png';
+            break;
+    }
+    document.querySelector('.char').innerHTML = `<img src=${icon}>`;
+    document.querySelector('.char-message').innerText = char + " selected.";
+}
+
 startBtn.addEventListener("click", function() {
+    heart = new Heart();
+    allJewels = [ new Jewel(30, 50), new Jewel(130, 50), new Jewel(230, 50), new Jewel(330, 50), new Jewel(430, 50)];
+    allEnemies = [ new Enemy(bugs[0]), new Enemy(bugs[1]), new Enemy(bugs[2])];
     document.getElementById('start-screen').style.display = 'none';
     scores = 0;
     lives = 3;
@@ -13,11 +48,7 @@ startBtn.addEventListener("click", function() {
     updateLives();
 })
 
-
-
-
-
-var updateLives = function() {
+let updateLives = function() {
     if (lives >= 3) {
         lives = 3;
         document.querySelector('.lives').innerText = `Health: ❤️️❤️️❤️️`;
@@ -29,32 +60,52 @@ var updateLives = function() {
         gameOver();
 }
 
-var updateScores = function() {
+let updateScores = function() {
     document.querySelector('.scores').innerText = `You have ${scores} points.`;
     if (scores == 100)
         congrats();
 }
 
-var gameOver = function() {
+let congrats = function() {
     document.getElementById('start-screen').style.display = 'block';
-    document.querySelector(".modal-title").innerText = 'The Frogger is dead.';
+    document.querySelector(".modal-title").innerText = 'Winner!!!';
+    document.querySelector(".modal-content").style.backgroundColor = '#047c6c';
+    document.querySelector('.selection-container').style.display = 'none';
+    document.querySelector('.start-btn').innerHTML = 'Play Again';
+    document.querySelector('.start-btn').classList.add('btn-warning');
+    document.getElementById("carouselExampleIndicators").innerHTML = `
+        <div class="instruction mt-5">
+            <h3 style="font-size: 32px;">Congratulations!</h3>
+        </div>
+        <div class="partition">
+            <p class="">You ended the game with ${scores}/100 points. Boss! 🙌
+            </p>
+            <img style="height: 300px" src="https://i.gifer.com/6os.gif">
+        </div>
+    `
+}
+
+let gameOver = function() {
+    document.getElementById('start-screen').style.display = 'block';
+    document.querySelector(".modal-title").innerText = 'You lost this round.';
     document.querySelector(".modal-content").style.backgroundColor = '#924742fd';
-    // document.querySelector(".modal-content").style.height = '500px';
     document.querySelector('.selection-container').style.display = 'none';
     document.querySelector('.start-btn').innerHTML = 'Restart Game';
+    document.querySelector('.start-btn').classList.remove('btn-warning');
     document.getElementById("carouselExampleIndicators").innerHTML = `
         <div class="instruction mt-5">
             <h3 style="font-size: 32px;">Game Over</h3>
         </div>
         <div class="partition">
-            <p class="">You ended the game with ${scores} points. press restart to try again. 🥺️
+            <p class="">You ended the game with ${scores}/100 points. press restart to try again. 🥺️
             </p>
             <img style="height: 300px" src="https://i.gifer.com/7VE.gif">
         </div>
     `
 }
-// ENEMIES
-var Enemy = function(enemy = {})
+
+/* ---------------------- ENEMIES CLASS ---------------------------------*/
+let Enemy = function(enemy = {})
 {
     this.enemy = enemy;
     this.x = enemy.position.x;
@@ -82,24 +133,18 @@ Enemy.prototype.update = function(dt) {
             this.x = -50;
     }
 
+    //Collision detection
     if (((this.x + 50 >= player.x) &&
     (this.x - 10 <= player.x)) &&
-    ((this.y + 20 >= player.y) /*||
-    (this.y - 1 <= player.y)*/)) {
-
-    console.log(`collision + x${this.x} + y${this.y}`);
-    player.x = 200;
-    player.y = 400;
-
-    if (this.enemy)
+    ((this.y + 10 >= player.y) &&
+    (this.y - 1 <= player.y))) {
+        player.x = 200;
+        player.y = 400;
         lives -= 1, updateLives();
-    else if (this.heart)
-        lives += 1, updateLives();
-    else
-        scores += 20, updateScores();
-    };
+    }
 
     let newBug = bugs.random();
+    //probability of spawning (frequency control)
     let isSpawnReady = (Math.random() < 0.005);
 
     if (this.x > 300 && isSpawnReady && allEnemies.length < 6)
@@ -116,19 +161,31 @@ Enemy.prototype.update = function(dt) {
         }
     }
 };
-    //position reset
-
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
-
 
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-// PLAYER
-var Player = function(char, x = 200, y = 400) {
+let bugs = [
+    {
+        position: { x: -50, y: 60},
+        speed: 100,
+        sprite: 'images/enemy-bug.png'
+    },
+    {
+        position: { x: 500, y: 145},
+        speed: 100,
+        sprite: 'images/enemy-bug-flip.png'
+    },
+    {
+        position: { x: -50, y: 225},
+        speed: 100,
+        sprite: 'images/enemy-bug.png'
+    }
+]
+
+/* ---------------------- PLAYER CLASS ---------------------------------*/
+let Player = function(char, x = 200, y = 400) {
     this.x = x;
     this.y = y;
     this.char = char;
@@ -150,23 +207,23 @@ Player.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-// Player.prototype.reset = function(){
-//     this.x = 200;
-//     this.y = 100;
-// }
+Player.prototype.reset = function(){
+    this.x = 200;
+    this.y = 400;
+}
 
-// var playerPosX;
-// var playerPosY;
-
-// Player.prototype.update = function() {
-//     playerPosX = this.x;
-//     playerPosY = this.y;
-// }
+Player.prototype.update = function() {
+    if (this.y <= 50) {
+        setTimeout(function(){
+            player.reset();
+        }, 300)
+    }
+}
 
 Player.prototype.handleInput = function(keyDown) {
-        if (keyDown === 'left' && this.x > 0)
+        if (keyDown === 'left' && this.x > 0 && this.y > 50)
             this.x -= 101;
-        else if (keyDown === 'right' && this.x < 400)
+        else if (keyDown === 'right' && this.x < 400 && this.y > 50)
             this.x += 101;
         else if (keyDown === 'up' && this.y > 0)
             this.y -= 83;
@@ -174,79 +231,40 @@ Player.prototype.handleInput = function(keyDown) {
             this.y += 83;
 }
 
-let bugs = [
-    {
-        position: { x: -50, y: 60},
-        speed: 100,
-        sprite: 'images/enemy-bug.png'
-    },
-    {
-        position: { x: 500, y: 145},
-        speed: 100,
-        sprite: 'images/enemy-bug-flip.png'
-    },
-    {
-        position: { x: -50, y: 225},
-        speed: 100,
-        sprite: 'images/enemy-bug.png'
-    }
-]
+//Instantiation of player
+let player = new Player('boy');
 
-//create an array method to return a random value in an array
-Array.prototype.random = function () {
-    return this[Math.floor((Math.random() * this.length))];
-}
-
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-var allEnemies = [ new Enemy(bugs[0]), new Enemy(bugs[1]), new Enemy(bugs[2])];
-// Place the player object in a variable called player
-
-// Default player state
-var player = new Player('boy');
-var icon = 'images/char-boy.png';
-document.querySelector('.char').innerHTML = `<img src=${icon}>`;
-document.querySelector('.char-message').innerText = "boy selected.";
-
-// When a character gets selected
-var selectChar = function(char) {
-    player = new Player(char);
-
-    switch (char) {
-        case 'cat-girl': icon = 'images/char-cat-girl.png';
-            break;
-        case 'boy': icon = 'images/char-boy.png';
-            break;
-        case 'little-devil': icon = 'images/char-horn-girl.png';
-            break;
-        case 'pink-girl': icon = 'images/char-pink-girl.png';
-            break;
-        case 'princess': icon = 'images/char-princess-girl.png';
-            break;
-    }
-    document.querySelector('.char').innerHTML = `<img src=${icon}>`;
-    document.querySelector('.char-message').innerText = char + " selected.";
-}
-
-//Jewel class
-var Jewel = function (x, y) {
+/* ---------------------- JEWEL CLASS ---------------------------------*/
+let Jewel = function (x, y) {
     this.x = x;
     this.y = y;
     this.sprite = 'images/Gem-Orange.png';
 }
 
-var allJewels = [ new Jewel(30, 50), new Jewel(130, 50), new Jewel(230, 50), new Jewel(330, 50), new Jewel(430, 50)];
-
 Jewel.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-//Heart class
-var Heart = function () {
-    var randomXPos = [30, 130, 230, 330, 430];
-    var randomYPos = [150, 250, 350];
-    this.x = randomXPos.random();
-    this.y = randomYPos.random();
+Jewel.prototype.update = function(){
+    //collision detection
+    allJewels.forEach(function (jewel, index, allJewels){
+        if (((jewel.x + 50 >= player.x) &&
+        (jewel.x - 50 <= player.x)) &&
+        ((jewel.y + 10 >= player.y))) {
+            allJewels.splice(index, 1);
+            scores += 20, updateScores();
+        }
+    })
+}
+
+/* ---------------------- HEART CLASS ---------------------------------*/
+
+let randomXPos = [30, 130, 230, 330, 430];
+let randomYPos = [135, 217, 300];
+
+let Heart = function () {
+    this.x = -200;
+    this.y = -300;
     this.sprite = 'images/Heart.png';
 }
 
@@ -254,12 +272,29 @@ Heart.prototype.render = function(){
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 }
 
-var heart = new Heart();
+Heart.prototype.reset = function(){
+    this.x = randomXPos.random();
+    this.y = randomYPos.random();
+}
+
+Heart.prototype.update = function(){
+    if (lives == 1 && this.y == -300)
+        heart.reset();
+    //collision detection
+    if (((this.x + 40 >= player.x) &&
+    (this.x - 40 <= player.x)) &&
+    (this.y - 17 >= player.y)) {
+            console.log("collision detection");
+            this.x = -200;
+            this.y = -300;
+            lives += 1, updateLives();
+        }
+}
+
+let heart = new Heart();
 
 
-
-// This listens for key presses and sends the keys to your
-// Player.handleInput() method. You don't need to modify this.
+// This listens for key presses and sends the keys to your Player.handleInput() method.
 document.addEventListener('keyup', function(e) {
     var allowedKeys = {
         37: 'left',
