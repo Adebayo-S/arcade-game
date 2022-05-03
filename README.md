@@ -6,8 +6,13 @@ This game was built with JavaScript. The functions are **object-oriented** class
 
 ## How to play
 
-- Move your player using the keyboard arrow keys:
-    - Up: ⬆️
-    - Right: ➡️
-    - Left: ⬅️
-    - Down: ⬇️
+visit: [arcade-game](https://adebayo-s.github.io/arcade-game/)
+
+### Move your player using the keyboard arrow keys
+
+    ```
+    - ⬆️: Up
+    - ➡️: Right
+    - ⬅️: Left
+    - ⬇️: Down
+    ```
